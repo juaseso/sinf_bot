@@ -1,9 +1,6 @@
-from pymongo import MongoClient
-
-client = MongoClient('localhost', 27017)
+from conn_conf import client
 
 db = client.pelicula
-
 peli = db.peli
 
 def insert_user(update):

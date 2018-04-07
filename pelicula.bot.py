@@ -36,7 +36,7 @@ def cancel(bot, update):
 
 
 def main():
-    update = Updater(Token)
+    update = Updater(str(Token))
     conversacion = ConversationHandler(entry_points=[CommandHandler("inicio", inicio)],
                                        states={PELICULA: [MessageHandler(Filters.text, pelicula)],
                                                END: [MessageHandler(Filters.text, end)]},
