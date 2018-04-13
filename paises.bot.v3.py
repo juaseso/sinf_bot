@@ -7,7 +7,7 @@ noticia = {}
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 
-CLASIFICAR_INI, GET_TITULAR, INSERT_PAIS, GET_CUERPO, SEGUIR_CLASIFICANDO = range(6)
+CLASIFICAR_INI, CLASIFICAR_TITULO_SUFICIENTE, CLASIFICAR_CUERPO_SUFICIENTE, CLASIFICAR_PAIS = range(4)
 
 
 def inicio(bot, update):
@@ -26,7 +26,7 @@ def clasificar_cuerpo_suficiente(bot, update):
 	
 def clasificar_pais(bot, update):
 	if pais_exists(update): 
-		# to-do: clasificaPais(update)
+		clasificaPais(update, noticia)
 		bot.sendMessage(chat_id=update.message.chat.id, text='Noticia clasificada correctamente, gracias por participar.')
 		return decisor(3,bot,update)
 	else: 
@@ -41,7 +41,7 @@ def decisor(d, bot, update):
 	# Decision 1: Pregunta si quiere clasificar una noticia
 	if d == 1: 
 		if update.message.text.lower() == 'si' or update.message.text.lower() == 'sí':
-			bot.sendMessage(chat_id=update.message.chat.id, text=getTitular()) # to-do: getTitular()
+			bot.sendMessage(chat_id=update.message.chat.id, text=getTitular(noticia))
 			bot.sendMessage(chat_id=update.message.chat.id, text="¿Es posible decir a qué país pertenece con esta información?")
 			return CLASIFICAR_TITULO_SUFICIENTE
 		else:
@@ -55,7 +55,7 @@ def decisor(d, bot, update):
 			bot.sendMessage(chat_id=update.message.chat.id, text="Introduce el nombre del país, por favor")
 			return CLASIFICAR_PAIS
 		else:
-			bot.sendMessage(chat_id=update.message.chat.id, text=getCuerpo()) # to-do getCuerpo()
+			bot.sendMessage(chat_id=update.message.chat.id, text=getCuerpo(noticia))
 			bot.sendMessage(chat_id=update.message.chat.id, text="¿Es posible decir a qué país pertenece con esta información?")
 			return CLASIFICAR_CUERPO_SUFICIENTE
 			
@@ -73,7 +73,7 @@ def decisor(d, bot, update):
 			return CLASIFICAR_PAIS
 		else: 
 			bot.sendMessage(chat_id=update.message.chat.id, text="Noticia marcada como no clasificable para su revisión.")
-			# to-do: marcarNoticia()
+			marcarNoticia(noticia)
 			bot.sendMessage(chat_id=update.message.chat.id, text='¿Quieres seguir clasificando noticias?')
 			return CLASIFICAR_INI
 		
@@ -90,7 +90,9 @@ def main():
     conversacion = ConversationHandler(entry_points=[CommandHandler("inicio", inicio)],
 										states={
 											CLASIFICAR_INI: [MessageHandler(Filters.text, clasificar_ini)],
-											GET_TITULAR: [MessageHandler(get_titular)],
+											CLASIFICAR_TITULO_SUFICIENTE: [MessageHandler(Filters.text, clasificar_titulo_suficiente)],
+											CLASIFICAR_CUERPO_SUFICIENTE: [MessageHandler(Filters.text, clasificar_cuerpo_suficiente)],
+											CLASIFICAR_PAIS: [MessageHandler(Filters.text, clasificar_pais)],
 											   },
                                        fallbacks=[CommandHandler('cancelar', cancel)])
 	

@@ -28,7 +28,7 @@ def getNoticia():
 		noticia = cnoticias.find({'n_analisis':{'$lt':5} }).sort('n_analisis',1).limit(1)[0]
 		return noticia
 	except Exception as e:
-	return None
+		return None
 	
 def getTitular(noticia):
 	return noticia['titular']
