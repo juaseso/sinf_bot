@@ -1,7 +1,9 @@
 import logging
+from time import sleep
 from store import getNoticia, getTitular, getCuerpo, marcarNoticia, clasificaPais, paisExists
 from telegramkey import Token
 from telegram.ext import Updater, CommandHandler, ConversationHandler, Filters, MessageHandler, Handler
+
 
 noticia = {}
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
@@ -50,7 +52,10 @@ def decisor(d, bot, update):
 			bot.sendMessage(chat_id=update.message.chat.id, text="1-Introduce el nombre del país, por favor")
 			return CLASIFICAR_PAIS
 		else:
-			bot.sendMessage(chat_id=update.message.chat.id, text=getCuerpo(noticia))
+			cuerpo = text=getCuerpo(noticia)
+			for linea in cuerpo: 
+				bot.sendMessage(chat_id=update.message.chat.id, text = linea)
+				sleep(0.5)
 			bot.sendMessage(chat_id=update.message.chat.id, text="¿Es posible decir a qué país pertenece con esta información?")
 			return CLASIFICAR_CUERPO_SUFICIENTE
 			
