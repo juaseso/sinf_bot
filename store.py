@@ -3,7 +3,7 @@ from conn_conf import client
 db = client.proyecto_sinf
 cpaises = db.paises
 cnoticias = db.noticias
-
+ 
 def paisExists(update):
     try:
         bol = False

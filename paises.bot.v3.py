@@ -8,7 +8,7 @@ from telegram.ext import Updater, CommandHandler, ConversationHandler, Filters, 
 noticia = {}
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.DEBUG)
 CLASIFICAR_INI, CLASIFICAR_TITULO_SUFICIENTE, CLASIFICAR_CUERPO_SUFICIENTE, CLASIFICAR_PAIS = range(4)
-
+ 
 def inicio(bot, update):
 	bot.sendMessage(chat_id=update.message.chat.id, text="Hola {}, ¿Quieres clasificar una noticia?".format(update.message.chat.first_name))
 	return CLASIFICAR_INI
