@@ -6,24 +6,24 @@ cnoticias = db.noticias
 
 
 def strip_accents(text):
-    try:
-        text = unicode(text, 'utf-8')
-    except (TypeError, NameError): # unicode is a default on python 3 
-        pass
-    text = unicodedata.normalize('NFD', text)
-    text = text.encode('ascii', 'ignore')
-    text = text.decode("utf-8")
-    return str(text)
+	try:
+		text = unicode(text, 'utf-8')
+	except (TypeError, NameError): # unicode is a default on python 3 
+		pass
+	text = unicodedata.normalize('NFD', text)
+	text = text.encode('ascii', 'ignore')
+	text = text.decode("utf-8")
+	return str(text)
 
 def paisExists(update):
-    try:
-        bol = False
-		pais_buscar = strip_accents(update.message.text.lower().replace(' ', ''))
-        if cpaises.find({"nombrePaisNormalizado": pais_buscar}).count() > 0:
-            bol = True
-        return bol
-    except Exception as e:
-        return bol
+	try:
+		bol = False
+		pais_buscar = strip_accents(update.message.text.lower().replace(' ', '') )
+		if cpaises.find({"nombrePaisNormalizado": pais_buscar}).count() > 0:
+			bol = True
+		return bol
+	except Exception as e:
+		return bol
 
 def getNoticia(): 
 	try: 
