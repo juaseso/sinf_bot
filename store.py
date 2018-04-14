@@ -4,10 +4,22 @@ db = client.proyecto_sinf
 cpaises = db.paises
 cnoticias = db.noticias
 
+
+def strip_accents(text):
+    try:
+        text = unicode(text, 'utf-8')
+    except (TypeError, NameError): # unicode is a default on python 3 
+        pass
+    text = unicodedata.normalize('NFD', text)
+    text = text.encode('ascii', 'ignore')
+    text = text.decode("utf-8")
+    return str(text)
+
 def paisExists(update):
     try:
         bol = False
-        if cpaises.find({"nombrePais": update.message.text}).count() > 0:
+		pais_buscar = strip_accents(update.message.text.lower().replace(' ', ''))
+        if cpaises.find({"nombrePaisNormalizado": pais_buscar}).count() > 0:
             bol = True
         return bol
     except Exception as e:
